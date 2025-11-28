@@ -1,0 +1,84 @@
+I want to build a modular web service called **AI Build Coach**.
+
+### WHAT THIS WEB SERVICE DOES (FOR CONTEXT ONLY)
+Users can paste any website URL into the app.  
+The AI Build Coach will eventually provide:
+1. **Functionality testing** – check if the website works (buttons, links, forms, flows).
+2. **Auto-browsing** – automatically explore the site to find errors or broken interactions.
+3. **UX & design review** – after everything works, suggest layout, spacing, readability and mobile improvements.
+4. **SEO review** – analyse title, meta description, headings, content structure and accessibility.
+5. **Competitor comparison** – compare the user’s website to other similar services and suggest missing features.
+6. **Fix instructions** – generate very simple step-by-step tasks and copy-paste prompts the user can give to Replit to fix issues.
+7. **Task modules** – group feedback into modules with checkboxes so users can track progress.
+
+Users will access this tool through a simple webpage:
+- They paste a URL
+- Click “Analyse”
+- Get structured modules with tasks and fix prompts
+
+### IMPORTANT RIGHT NOW
+Do NOT build the real logic yet.  
+Only build the **full project structure** and empty placeholders so we can fill each module step by step.
+
+### BUILD THIS STRUCTURE:
+
+#### 1. main.py (FastAPI backend)
+- Enable CORS so frontend can access backend.
+- Add a root GET endpoint ("/") that returns {"status": "AI Build Coach Online"}.
+- Add placeholder POST routes:
+    - /analyse
+    - /auto-test
+    - /seo-check
+    - /competitors
+- Each route should return {"message": "not implemented yet"}.
+- Add comments explaining what each route will eventually do.
+- Add a placeholder helper for fetching external URLs (important for later).
+
+#### 2. Create a folder: modules  
+Inside it create these files, each containing empty function stubs and clear docstrings describing their purpose:
+
+- analyse_html.py  
+  """Will later download external HTML, analyse structure, and produce basic issues."""
+
+- auto_test.py  
+  """Will later auto-browse a site, click buttons, detect errors, broken links, and console logs."""
+
+- ui_review.py  
+  """Will later analyse UX, layout, spacing, readability, and mobile view."""
+
+- seo.py  
+  """Will later analyse title, meta tags, headings, content and accessibility."""
+
+- competitor.py  
+  """Will later fetch competitor websites and compare features."""
+
+- generate_prompts.py  
+  """Will later generate simple copy-paste prompts to fix issues in Replit."""
+
+- task_manager.py  
+  """Will later organise tasks into modules, track status, and manage checklists."""
+
+Each file should only contain minimal skeleton functions + comments.
+
+#### 3. Create a folder: frontend
+Add these files:
+
+- index.html  
+  - Input box for the website URL  
+  - A button “Analyse Website”  
+  - A result container  
+  - Very simple, clean HTML (no advanced CSS yet)
+
+- script.js  
+  - When user clicks the button, send the URL to backend /analyse  
+  - Display the JSON stub response in the result container  
+  - Only basic code for now
+
+- style.css  
+  - Simple layout styling: centered content, readable spacing  
+  - Nothing advanced yet
+
+### FINAL INSTRUCTION
+Only build the file/folder structure and clear placeholders.  
+Do NOT implement real logic, AI analysis, auto-testing, UX checks, SEO checks, or competitor functions yet.
+Keep everything clean and easy to extend later.

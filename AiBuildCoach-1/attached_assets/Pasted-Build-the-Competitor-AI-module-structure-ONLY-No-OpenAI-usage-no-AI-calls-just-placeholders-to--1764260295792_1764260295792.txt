@@ -1,0 +1,83 @@
+Build the Competitor AI module structure ONLY. 
+No OpenAI usage, no AI calls — just placeholders to keep costs low.
+
+1. In modules/, create competitor_ai_placeholder.py.
+   Inside define:
+
+   def run_competitor_ai_placeholder(main_html, main_url, competitors):
+       return {
+           "summary": "Competitor comparison placeholder.",
+           "competitors": [
+               {
+                   "url": c,
+                   "what_they_do_well": ["Placeholder"],
+                   "what_they_do_poorly": ["Placeholder"],
+                   "lessons_to_use": ["Placeholder"]
+               }
+               for c in competitors
+           ],
+           "ai_tasks": [
+               {
+                   "issue": "Placeholder competitive disadvantage",
+                   "task": "Placeholder recommended fix",
+                   "priority": "low"
+               }
+           ],
+           "exact_fixes": [
+               {
+                   "selector": "<body>",
+                   "fix": "Placeholder fix"
+               }
+           ],
+           "fix_prompt": "Placeholder competitor improvement prompt"
+       }
+
+2. In main.py:
+   - Add a POST endpoint /competitor-ai.
+   - Input format:
+        {
+           "url": "<main-url>",
+           "competitors": ["<comp1>", "<comp2>", ...]
+        }
+   - Fetch main HTML normally.
+   - For each competitor URL:
+       • Fetch HTML (or simple try/except).
+       • Pass HTML into the placeholder function.
+   - Return the placeholder JSON to the frontend.
+
+3. In static/js/app.js:
+   - Create a function analyseCompetitors(url, competitorList).
+   - It will:
+       • POST data to /competitor-ai
+       • Render results into #competitor-ai-output
+       • Display:
+            - summary
+            - per-competitor comparison
+            - tasks
+            - exact fixes
+            - fix_prompt
+
+4. In index.html:
+   Add a new section:
+
+     <section id="competitor-ai-section">
+         <h2>Competitor AI Review</h2>
+         <input id="competitor-input" placeholder="Enter competitor URLs, comma separated">
+         <button id="competitor-run">Run Competitor Comparison</button>
+         <div id="competitor-ai-output"></div>
+     </section>
+
+5. In app.js:
+   - Make #competitor-run button trigger analyseCompetitors().
+
+6. In styles.css:
+   - Add simple layout for competitor results similar to UX/SEO sections.
+
+DO NOT add any OpenAI code yet.
+Only placeholders for now to avoid usage charges.
+
+Goal:
+- Competitor module UI exists
+- Backend endpoint exists
+- Frontend displays placeholder output
+- No AI cost or tokens consumed

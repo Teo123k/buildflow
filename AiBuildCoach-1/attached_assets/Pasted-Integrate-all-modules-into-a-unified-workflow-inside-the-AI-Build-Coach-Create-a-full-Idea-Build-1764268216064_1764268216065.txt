@@ -1,0 +1,120 @@
+Integrate all modules into a unified workflow inside the AI Build Coach. Create a full “Idea → Build → Test → Improve → Publish” system that matches the workflow described below.
+
+-----------------------------------------
+WORKFLOW TO IMPLEMENT
+-----------------------------------------
+
+PHASE 1 — IDEA → BLUEPRINT
+Use the existing **Build Planner** module to produce:
+- app summary
+- pages
+- functions
+- endpoints
+- database
+- user flow
+- priority levels (A/B/C)
+- cheap build prompts
+
+Output JSON continues as before.
+
+PHASE 2 — BLUEPRINT → STEP-BY-STEP BUILDING
+Add a new global module called **Guided Build Workflow**.
+
+This module must:
+1. Convert the Build Planner output into a checklist of tasks.
+2. Group tasks by priority:
+   - Level A (core first)
+   - Level B (improvements)
+   - Level C (optional)
+3. Each task MUST have a “Generate Build Prompt” button.
+4. When clicked, generate a small, low-cost Replit prompt:
+   - Only 1–2 files allowed to change
+   - Short, simple, minimal
+   - Friendly for a 12-year-old
+   - Format:
+        Goal:
+        Files allowed to change:
+        Keep everything else unchanged:
+        Smallest edit possible:
+
+5. Add a “Next Task” button.
+6. Add a progress tracker (X/Y done).
+7. Add a button “Fix My Error (Generate Fix Prompt)”:
+   - User pastes error message
+   - System returns a minimal Replit prompt containing the fix
+
+Add a new endpoint: **/workflow**
+Input: { idea }
+Output:
+{
+  steps: [...],
+  prompts: {...},
+  next_step: "",
+  error_fixer: false
+}
+
+PHASE 3 — TEST & IMPROVE (Existing Modules)
+Integrate all existing modules into the new workflow:
+- Overview
+- Auto-Test
+- UX Review
+- SEO Check
+- Competitor Insights
+
+Rules:
+- These modules must ONLY activate after Level A tasks are completed.
+- This prevents cost waste.
+- Add a banner: “Basic build not done yet — finish core tasks first.”
+
+PHASE 4 — FINAL POLISH
+After steps complete:
+- Allow the user to run UX, SEO, Auto-Test, Competitor AI *in sequence*.
+- Output short, simple improvements.
+- For each improvement, generate a “Fix Prompt” just like above.
+
+-----------------------------------------
+UI CHANGES
+-----------------------------------------
+
+Add a new main tab: **Build Flow**.
+
+Inside Build Flow:
+- Show checklist with collapsible sections (A, B, C)
+- Show step details
+- Show “Generate Prompt” buttons
+- Add “Copy Prompt” button
+- Add “Fix My Error” button
+- Add progress bar
+- Add “Next Step” button
+
+Add connection so that:
+- Build Planner feeds into Build Flow
+- Build Flow updates as tasks are completed
+- Other modules become available after progress threshold (≈70%)
+
+-----------------------------------------
+LOW-COST MODE (MUST IMPLEMENT)
+-----------------------------------------
+
+All AI calls must:
+- Use short prompts internally
+- Limit output length
+- Avoid long explanations
+- Never rewrite entire files
+- Never perform unnecessary refactors
+- Only produce step-based, minimal changes
+
+-----------------------------------------
+GOAL
+-----------------------------------------
+
+Make the building experience identical to how the user worked with ChatGPT:
+- Clear steps
+- Guided prompts
+- Small edits
+- Easy to follow
+- Minimal cost
+- Smooth flow
+- Beginner-friendly (12-year-old mode)
+
+Integrate all modules into one consistent workflow, with Build Planner → Guided Workflow → Testing → Improvements → Publish sequence.

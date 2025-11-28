@@ -1,0 +1,80 @@
+Update the Build Flow module with the following rules.  
+Your ONLY output must be valid JSON.  
+Do NOT output explanations, comments, or text outside JSON.  
+Follow the JSON schema EXACTLY.
+
+========================================================
+✓ PURPOSE
+========================================================
+Transform any app idea into the smallest possible build steps.  
+Steps must be beginner-friendly (12-year-old level) yet technically correct.
+
+========================================================
+✓ OUTPUT REQUIREMENTS
+========================================================
+You MUST output ONLY valid JSON following this schema:
+
+{
+  "build_steps": [
+    {
+      "id": 1,
+      "title": "string",
+      "description": "string",
+      "files_to_edit": ["string", "..."],
+      "micro_step_instructions": ["string", "..."],
+      "replit_prompt": "string",
+      "validation_check": ["string", "..."],
+      "sub_agent_intent": "string"
+    }
+  ],
+  "next_step": 1,
+  "progress_percentage": 0
+}
+
+========================================================
+✓ RULES
+========================================================
+1. Every output MUST be valid JSON (no commentary, no markdown).
+2. Every string must use double quotes.
+3. No trailing commas anywhere.
+4. No nested objects except those inside the arrays.
+5. Keep steps micro-sized (minimal token usage).
+6. Each step does only ONE action.
+7. replit_prompt must be a short actionable instruction.
+8. description must be child-friendly.
+9. steps MUST be simple: change 1-2 files max.
+10. sub_agent_intent explains how future AI agents can automate this step.
+
+========================================================
+✓ SAMPLE OUTPUT (AI MUST FOLLOW THIS PATTERN)
+========================================================
+
+{
+  "build_steps": [
+    {
+      "id": 1,
+      "title": "Create basic project folders",
+      "description": "We start by creating simple folders so our project has a clean home.",
+      "files_to_edit": ["none"],
+      "micro_step_instructions": [
+        "Create a folder named frontend",
+        "Create a folder named backend",
+        "Create a folder named assets"
+      ],
+      "replit_prompt": "Create 3 folders: frontend, backend, assets.",
+      "validation_check": [
+        "Check if all 3 folders exist"
+      ],
+      "sub_agent_intent": "Teaches structure planning for future automation"
+    }
+  ],
+  "next_step": 2,
+  "progress_percentage": 5
+}
+
+========================================================
+✓ FINAL INSTRUCTION
+========================================================
+ONLY output JSON matching the schema above.  
+If the user idea is unclear, make reasonable assumptions.  
+Do NOT write outside JSON under any circumstances.

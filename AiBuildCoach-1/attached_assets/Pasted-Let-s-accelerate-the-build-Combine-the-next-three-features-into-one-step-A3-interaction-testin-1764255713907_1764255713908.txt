@@ -1,0 +1,96 @@
+Let’s accelerate the build. 
+Combine the next three features into one step: 
+(A3) interaction testing, (A4) performance metrics, and (A5) converting auto-test results into tasks.
+
+Open modules/auto_test.py and extend it with:
+
+---------------------
+1. Interaction Testing (A3)
+---------------------
+Add a new function:
+
+run_interaction_tests(page) -> dict
+
+Inside it:
+- Attempt to click all <button> elements.
+- Attempt to click all elements with role="button".
+- Attempt to click any <a> links ON the homepage only (not deep crawling).
+- Record:
+    - success or failure for each interaction
+    - JS errors triggered during clicks
+    - elements that did nothing
+    - elements that triggered navigation
+
+Return format:
+
+{
+  "button_clicks": [...],
+  "link_clicks": [...],
+  "interaction_errors": [...]
+}
+
+---------------------
+2. Performance + Page Metrics (A4)
+---------------------
+Inside run_basic_autotest or as a new method, collect:
+
+- page load time
+- DOMContentLoaded time
+- number of network requests
+- list of large files (>300 KB)
+- number of JS errors
+- number of images not loaded
+- total resource size
+
+Use:
+- page.expect_event("…")
+- page.request
+- page.on("console")
+
+Return something like:
+
+{
+  "load_time_ms": ...,
+  "dom_content_loaded_ms": ...,
+  "requests": [...],
+  "large_files": [...],
+  "js_errors": [...],
+  "resource_size_kb": ...
+}
+
+---------------------
+3. Convert Auto-Test Findings → Tasks (A5)
+---------------------
+Open modules/task_manager.py and add a new function:
+
+generate_tasks_from_autotest(autotest_results) -> list
+
+This function should:
+- Read all broken links
+- Read JS errors
+- Read missing images
+- Read interaction errors
+- Read slow load times or large files
+
+Transform each issue into a task:
+
+{
+  "issue": "Broken link: /contact → 404",
+  "task": "Fix or remove the link to /contact.",
+  "prompt": "Correct the href or update the route for '/contact'.",
+  "done": false
+}
+
+Then update main.py:
+- In /auto-test:
+    - Run all auto-tests
+    - Call generate_tasks_from_autotest()
+    - Return:
+
+{
+  "autotest": { ... all test data ... },
+  "tasks": [ ... auto-test tasks ... ]
+}
+
+Do not integrate AI yet (we will add AI-enhanced auto-test tasks later).
+Keep everything clean and readable.

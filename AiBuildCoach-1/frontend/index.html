@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Build Coach</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-row">
+                <div class="logo-section">
+                    <h1>🚀 AI Build Coach</h1>
+                    <p>Your friendly helper for building awesome websites!</p>
+                </div>
+                <div class="theme-toggle">
+                    <button id="theme-toggle-btn" class="theme-btn" title="Switch theme">
+                        <span class="theme-icon light-icon">☀️</span>
+                        <span class="theme-icon dark-icon">🌙</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <nav class="main-nav" id="main-nav">
+                <button class="main-nav-btn active" data-main-tab="website-analysis">
+                    <span class="main-nav-icon">🔍</span>
+                    <span class="main-nav-label">Website Analysis</span>
+                </button>
+                <button class="main-nav-btn" data-main-tab="build-planner">
+                    <span class="main-nav-icon">⭐</span>
+                    <span class="main-nav-label">Build Planner (AI)</span>
+                    <span class="premium-badge">NEW</span>
+                </button>
+            </nav>
+
+            <div class="main-content">
+                <section class="main-section active" id="main-website-analysis">
+                    <div class="input-section">
+                        <div class="input-wrapper">
+                            <span class="input-icon">🔗</span>
+                            <input 
+                                type="url" 
+                                id="url-input" 
+                                placeholder="Paste your website link here..."
+                                required
+                            >
+                        </div>
+                        <button id="analyse-btn" class="primary-btn">
+                            <span class="btn-icon">🔍</span>
+                            <span class="btn-text">Check My Site</span>
+                        </button>
+                    </div>
+
+                    <div id="loading" class="loading hidden">
+                        <div class="loading-spinner"></div>
+                        <span>Looking at your website...</span>
+                    </div>
+
+                    <nav class="tab-menu hidden" id="tab-menu">
+                        <button class="tab-btn active" data-tab="overview">
+                            <span class="tab-icon">🧠</span>
+                            <span class="tab-label">Overview</span>
+                        </button>
+                        <button class="tab-btn" data-tab="ux-ai">
+                            <span class="tab-icon">🎨</span>
+                            <span class="tab-label">Design</span>
+                        </button>
+                        <button class="tab-btn" data-tab="seo-ai">
+                            <span class="tab-icon">🔍</span>
+                            <span class="tab-label">SEO</span>
+                        </button>
+                        <button class="tab-btn" data-tab="auto-test">
+                            <span class="tab-icon">🧪</span>
+                            <span class="tab-label">Test</span>
+                        </button>
+                        <button class="tab-btn" data-tab="competitor-ai">
+                            <span class="tab-icon">🥇</span>
+                            <span class="tab-label">Competitors</span>
+                        </button>
+                        <button class="tab-btn" data-tab="tasks">
+                            <span class="tab-icon">📝</span>
+                            <span class="tab-label">Fix List</span>
+                        </button>
+                    </nav>
+
+                    <div class="tab-content">
+                        <div class="tab-section active" id="tab-overview">
+                            <div class="overview-content">
+                                <div id="overview-summary" class="overview-summary hidden">
+                                    <h2>📊 Website Analysis Overview</h2>
+                                    <div id="overview-stats" class="overview-stats"></div>
+                                    <div id="overview-quick-wins" class="overview-quick-wins"></div>
+                                </div>
+                                <div id="overview-placeholder" class="overview-placeholder">
+                                    <div class="placeholder-icon">🎯</div>
+                                    <h3>Ready to improve your website?</h3>
+                                    <p>Paste your website link above and click "Check My Site" to get started!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-section" id="tab-ux-ai">
+                            <section id="ux-ai-section" class="ux-ai-section card">
+                                <h2>🎨 Design Review</h2>
+                                <p class="section-description">Let's check how your website looks and feels to visitors!</p>
+                                <div id="ux-ai-loading" class="loading hidden">
+                                    <div class="loading-spinner"></div>
+                                    <span>Checking your design...</span>
+                                </div>
+                                <div id="ux-ai-output"></div>
+                            </section>
+                        </div>
+
+                        <div class="tab-section" id="tab-seo-ai">
+                            <section id="seo-ai-section" class="seo-ai-section card">
+                                <h2>🔍 SEO Review</h2>
+                                <p class="section-description">Let's help Google find your website!</p>
+                                <div id="seo-ai-loading" class="loading hidden">
+                                    <div class="loading-spinner"></div>
+                                    <span>Checking SEO...</span>
+                                </div>
+                                <div id="seo-ai-output"></div>
+                            </section>
+                        </div>
+
+                        <div class="tab-section" id="tab-auto-test">
+                            <section id="auto-test-section" class="auto-test-section card">
+                                <h2>🧪 Website Test</h2>
+                                <p class="section-description">Let's check if everything on your website works properly!</p>
+                                <button id="auto-test-run" class="primary-btn">
+                                    <span class="btn-icon">▶️</span>
+                                    <span class="btn-text">Run Tests</span>
+                                </button>
+                                <div id="auto-test-loading" class="loading hidden">
+                                    <div class="loading-spinner"></div>
+                                    <span>Testing your website...</span>
+                                </div>
+                                <div id="auto-test-output"></div>
+                            </section>
+                        </div>
+
+                        <div class="tab-section" id="tab-competitor-ai">
+                            <section id="competitor-ai-section" class="competitor-ai-section card">
+                                <h2>🥇 Competitor Check</h2>
+                                <p class="section-description">Let's see what your competitors are doing and how to beat them!</p>
+                                <button id="competitor-run" class="primary-btn">
+                                    <span class="btn-icon">🔎</span>
+                                    <span class="btn-text">Find Competitors</span>
+                                </button>
+                                <div id="competitor-ai-loading" class="loading hidden">
+                                    <div class="loading-spinner"></div>
+                                    <span>Finding competitors...</span>
+                                </div>
+                                <div id="competitor-ai-output"></div>
+                            </section>
+                        </div>
+
+                        <div class="tab-section" id="tab-tasks">
+                            <section id="tasks-section" class="tasks-section card">
+                                <h2>📝 Fix List</h2>
+                                <p class="section-description">All the things we found that you can improve!</p>
+                                <div id="all-tasks-container"></div>
+                            </section>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="main-section" id="main-build-planner">
+                    <div class="build-planner-hero">
+                        <div class="hero-icon">⭐</div>
+                        <h2>Build Planner (AI)</h2>
+                        <p class="hero-description">Turn your idea into a step-by-step building plan! Just describe what you want to create.</p>
+                    </div>
+
+                    <div class="build-planner-content card">
+                        <div class="idea-input-section">
+                            <label for="idea-input" class="input-label">What do you want to build?</label>
+                            <textarea id="idea-input" placeholder="Describe your app idea... e.g., 'A todo list where I can add tasks and mark them done'" rows="4"></textarea>
+                            <div class="button-row">
+                                <button id="generate-workflow-btn" class="primary-btn large-btn">
+                                    <span class="btn-icon">✨</span>
+                                    <span class="btn-text">Create My Plan</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div id="workflow-loading" class="loading hidden">
+                            <div class="loading-spinner"></div>
+                            <span>Creating your building plan...</span>
+                        </div>
+                        
+                        <div id="workflow-output" class="hidden">
+                            <div class="workflow-header-section">
+                                <div id="workflow-summary"></div>
+                                <div id="workflow-progress" class="progress-container">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="progress-fill"></div>
+                                    </div>
+                                    <div class="progress-text" id="progress-text">0% Complete</div>
+                                </div>
+                            </div>
+                            
+                            <div class="workflow-actions">
+                                <button id="copy-all-prompts-btn" class="secondary-btn">
+                                    <span class="btn-icon">📋</span>
+                                    <span class="btn-text">Copy All Prompts</span>
+                                </button>
+                                <button id="copy-build-plan-btn" class="secondary-btn">
+                                    <span class="btn-icon">📄</span>
+                                    <span class="btn-text">Copy Build Plan</span>
+                                </button>
+                            </div>
+                            
+                            <div id="testing-banner" class="testing-banner hidden">
+                                <span class="banner-icon">⏳</span>
+                                <span>Finish the main tasks first to unlock testing!</span>
+                            </div>
+                            
+                            <div class="workflow-steps">
+                                <div class="priority-section" id="priority-a-section">
+                                    <h3 class="priority-header priority-a">🔴 Level A - Must Have (Core)</h3>
+                                    <div id="priority-a-steps" class="steps-list"></div>
+                                </div>
+                                <div class="priority-section" id="priority-b-section">
+                                    <h3 class="priority-header priority-b">🟡 Level B - Should Have (Features)</h3>
+                                    <div id="priority-b-steps" class="steps-list"></div>
+                                </div>
+                                <div class="priority-section" id="priority-c-section">
+                                    <h3 class="priority-header priority-c">🟢 Level C - Nice to Have (Extras)</h3>
+                                    <div id="priority-c-steps" class="steps-list"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="error-fixer-section card">
+                                <h3>🔧 Fix My Error</h3>
+                                <p>Got an error? Paste it here and I'll help you fix it!</p>
+                                <textarea id="error-input" placeholder="Paste your error message here..." rows="3"></textarea>
+                                <button id="fix-error-btn" class="secondary-btn">
+                                    <span class="btn-icon">🩹</span>
+                                    <span class="btn-text">Get Fix</span>
+                                </button>
+                                <div id="error-fix-output" class="hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer>
+            <p>Made with 💜 by AI Build Coach</p>
+        </footer>
+    </div>
+
+    <script src="/script.js"></script>
+</body>
+</html>

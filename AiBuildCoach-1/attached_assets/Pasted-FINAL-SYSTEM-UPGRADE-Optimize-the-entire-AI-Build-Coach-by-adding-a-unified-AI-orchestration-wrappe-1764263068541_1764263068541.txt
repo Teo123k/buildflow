@@ -1,0 +1,200 @@
+FINAL SYSTEM UPGRADE:
+Optimize the entire AI Build Coach by adding a unified AI orchestration wrapper, caching, token limits, and performance improvements.
+
+Create a new file:
+
+utils/ai_wrapper.py
+
+Inside it implement the following:
+
+======================================================
+1. Create a unified AI call function
+======================================================
+
+from openai import OpenAI
+import os, json, time
+
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+_ai_cache = {}
+
+def smart_ai(prompt, model="gpt-4o-mini", cache_key=None, max_retry=3):
+    """
+    A unified AI wrapper to:
+    - cache repeated prompts
+    - retry on failure
+    - ensure valid JSON output
+    - reduce tokens via normalization
+    """
+    key = cache_key or prompt.strip()[:200]
+
+    # Return cached result if exists
+    if key in _ai_cache:
+        return _ai_cache[key]
+
+    for attempt in range(max_retry):
+        try:
+            response = client.chat.completions.create(
+                model=model,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.2,
+            )
+
+            output = response.choices[0].message.content
+
+            # Normalize to valid JSON if needed
+            output = output.strip()
+
+            if output.startswith("```"):
+                output = output.split("```")[1].strip()
+
+            # Cache result
+            _ai_cache[key] = output
+            return output
+
+        except Exception as e:
+            print(f"AI Error attempt {attempt+1}: {e}")
+            time.sleep(1)
+
+    return json.dumps({"error": "AI failed after retries"})
+
+
+======================================================
+2. Add HTML extraction + token limiter
+======================================================
+
+def extract_limited_html(html, limit=8000):
+    """
+    Keeps HTML short enough to avoid token waste.
+    Removes script tags, long style blocks, large JSON blobs.
+    """
+    import re
+
+    clean = re.sub(r"<script.*?>.*?</script>", "", html, flags=re.DOTALL)
+    clean = re.sub(r"<style.*?>.*?</style>", "", clean, flags=re.DOTALL)
+    clean = clean[:limit]
+    return clean
+
+
+======================================================
+3. Add global browser fallback module
+======================================================
+
+Create utils/browser_fetch.py:
+
+import requests
+from bs4 import BeautifulSoup
+
+def fetch_html(url):
+    """
+    Fetches HTML safely:
+    - Removes large scripts
+    - Returns graceful fallback output
+    """
+    try:
+        res = requests.get(url, timeout=10, headers={"User-Agent": "Mozilla"})
+        text = res.text
+        return BeautifulSoup(text, "html.parser").prettify()
+    except:
+        return "<html><body>Unable to fetch</body></html>"
+
+
+======================================================
+4. Update ALL modules to use:
+     - smart_ai()
+     - extract_limited_html()
+     - fetch_html()
+======================================================
+
+For:
+
+- UX AI
+- SEO AI
+- Competitor AI
+
+Update each module:
+
+Replace:
+  client.chat.completions.create(...)
+With:
+  smart_ai(prompt, cache_key=f"{module_name}-{url}")
+
+Replace:
+  html[:8000]
+With:
+  extract_limited_html(html)
+
+Replace:
+  requests.get(...)
+With:
+  fetch_html(url)
+
+
+======================================================
+5. Add a combined "Full Analysis" endpoint (optional)
+======================================================
+
+In main.py add:
+
+@app.post("/full-analysis")
+def full_analysis(data: dict):
+    url = data["url"]
+    html = fetch_html(url)
+    limited_html = extract_limited_html(html)
+
+    ux = run_ux_ai(limited_html, url)
+    seo = run_seo_ai(limited_html, url)
+
+    # Optional: competitor detection
+    try:
+        competitors_raw = discover_competitors_ai(url, limited_html)
+        competitors = json.loads(competitors_raw)
+    except:
+        competitors = []
+
+    comp_map = {}
+    for c in competitors:
+        comp_html = fetch_html(c)
+        comp_map[c] = extract_limited_html(comp_html)
+
+    comp = run_competitor_ai(limited_html, url, comp_map)
+
+    return {
+        "ux": ux,
+        "seo": seo,
+        "competitors": competitors,
+        "competitor_report": comp
+    }
+
+
+======================================================
+6. Update frontend to optionally use /full-analysis
+======================================================
+
+In static/js/app.js:
+
+Add a new function runFullAnalysis(url) that:
+- POSTs to /full-analysis
+- Fills:
+    • Overview
+    • UX tab
+    • SEO tab
+    • Competitor tab
+    • Tasks tab
+
+Do NOT delete existing per-module endpoints.
+
+
+======================================================
+GOAL
+======================================================
+
+After this upgrade:
+- All AI calls use a unified optimized wrapper
+- Token usage is 30–70% lower
+- Repeated analyses are cached
+- HTML is shortened automatically
+- Everything becomes faster and more stable
+- Full Analysis mode becomes available
+
+This is the FINAL optimization step for the full system.

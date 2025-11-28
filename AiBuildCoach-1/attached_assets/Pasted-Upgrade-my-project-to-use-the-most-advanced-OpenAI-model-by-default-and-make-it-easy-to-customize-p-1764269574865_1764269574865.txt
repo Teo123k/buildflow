@@ -1,0 +1,72 @@
+Upgrade my project to use the most advanced OpenAI model by default, and make it easy to customize per module.
+
+1. Open utils/ai_wrapper.py (or wherever smart_ai is defined) and:
+
+   - Add at the top:
+
+       DEFAULT_MODEL = "gpt-4.1"
+       CHEAP_MODEL = "gpt-4o-mini"
+
+     (If these names differ for this environment, use the closest equivalents Replit supports.)
+
+   - Update smart_ai to:
+
+       - Have signature: def smart_ai(prompt, model=None, cache_key=None, max_retry=3):
+       - If model is None, use DEFAULT_MODEL.
+       - Keep temperature low (0.1–0.2) for accuracy.
+
+     Example:
+
+       def smart_ai(prompt, model=None, cache_key=None, max_retry=3):
+           from openai import OpenAI
+           import os, json, time
+
+           client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+           use_model = model or DEFAULT_MODEL
+           ...
+
+           response = client.chat.completions.create(
+               model=use_model,
+               messages=[{"role": "user", "content": prompt}],
+               temperature=0.2,
+           )
+           ...
+
+2. Go through all modules that call the AI wrapper:
+
+   - UX AI
+   - SEO AI
+   - Competitor AI
+   - Overview / Analyse
+   - Build Planner (/plan)
+   - Guided Workflow (/workflow)
+
+   For each of these “thinking-heavy” modules, explicitly call:
+
+       smart_ai(prompt, model=DEFAULT_MODEL, cache_key=...)
+
+   so they use the advanced model.
+
+3. For lighter / mechanical modules (if they exist, like:
+   - auto-test simple checks
+   - tiny helper prompts
+   )
+
+   Optionally use:
+
+       smart_ai(prompt, model=CHEAP_MODEL, cache_key=...)
+
+   This keeps costs reasonable while still using the advanced model for the important stuff.
+
+4. Make sure:
+
+   - No place in the code still hardcodes "gpt-4o-mini" or any other model string.
+   - ALL OpenAI calls go through smart_ai only (no direct client.chat.completions.create scattered around).
+
+5. After updating:
+
+   - Run a quick test with /plan, /workflow, /ux-ai, /seo-ai and /competitor-ai.
+   - Confirm they all still return valid JSON and work as before, just with better-quality output.
+
+Goal:
+Use the strongest available OpenAI model (DEFAULT_MODEL) for all core reasoning tasks (planner, workflow, UX, SEO, competitor, overview) so answers become more accurate, professional, and specific, while keeping the option to use CHEAP_MODEL for simple tasks later.

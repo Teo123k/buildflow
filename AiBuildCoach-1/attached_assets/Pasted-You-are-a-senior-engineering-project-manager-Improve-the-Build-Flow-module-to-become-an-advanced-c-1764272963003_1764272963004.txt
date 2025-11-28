@@ -1,0 +1,150 @@
+You are a senior engineering project manager. Improve the Build Flow module to become an advanced, child-friendly, step-by-step product building system.  
+It must break ideas into the SMALLEST possible steps, each represented as a separate module/task, and each task must generate a professional, highly accurate, minimal-cost Replit prompt.
+
+This module must follow these rules:
+
+---------------------------------------------------------
+1. Child-Friendly + Professional Output
+---------------------------------------------------------
+- Every instruction MUST be simple, beginner-friendly (12-year-old level).
+- Avoid technical jargon unless necessary.
+- Always include small examples.
+- Every step must feel like a “small mission” the user can complete.
+
+---------------------------------------------------------
+2. Smallest Possible Steps (Micro-Tasks)
+---------------------------------------------------------
+Break down the entire build into micro-steps:
+- Each task should modify only 1–2 files.
+- Each task should do ONE thing only.
+- No complex prompts.
+- No heavy refactoring.
+
+Examples:
+- Create a new file
+- Add a button
+- Add a function
+- Add one API route
+- Add a component
+- Add a database field
+- Style one section
+- Add one validation rule
+
+This reduces cost and improves accuracy.
+
+---------------------------------------------------------
+3. Most Accurate Architecture Planning
+---------------------------------------------------------
+Use:
+- real software architecture patterns  
+- proper feature planning  
+- correct directory structure  
+- correct flow of data  
+- correct naming conventions  
+
+Output must always include:
+- What to build  
+- Why  
+- Where  
+- How  
+- What files to touch  
+- What to avoid  
+
+---------------------------------------------------------
+4. Real “Mini-Agent” inside Each Step
+---------------------------------------------------------
+Every step should include a “mini agent” guide:
+
+For each task, output:
+
+{
+  "what_this_step_is": "short explanation",
+  "why_this_step_matters": "simple explanation",
+  "files_to_edit": ["index.html", "main.py"],
+  "micro_step_instructions": [
+    "Step 1: Create X",
+    "Step 2: Add Y",
+    "Step 3: Test Z"
+  ],
+  "replit_prompt": "Minimal, accurate prompt user will paste into Replit",
+  "validation_check": [
+    "Check if button appears",
+    "Check if endpoint returns correct JSON"
+  ],
+  "sub_agent_intent": "What this task teaches or automates later"
+}
+
+This allows the user to understand EXACTLY what is going on and build confidence step-by-step.
+
+---------------------------------------------------------
+5. Self-Improving Output
+---------------------------------------------------------
+Every step should improve itself via reasoning:
+- If a previous module upgrade has been applied (like advanced UX or code generation),
+  this Build Flow must automatically adjust to those upgraded capabilities.
+
+Example:
+If the UX module becomes more advanced → Build Flow should recommend better UI structure.
+
+---------------------------------------------------------
+6. Preparing for Sub-Agents
+---------------------------------------------------------
+Each step must add “sub_agent_intent” describing:
+- what this step does
+- which future AI agent can automate it
+- how the system can reuse this logic
+
+This allows future building of specialized sub-agents like:
+- component designer agent  
+- backend API generator agent  
+- database agent  
+- UX agent  
+- testing agent  
+
+---------------------------------------------------------
+7. Ultra Cost-Efficient Mode
+---------------------------------------------------------
+The build flow must:
+- limit “replit_prompt” to very small actionable edits
+- avoid long responses
+- avoid large diffs
+- avoid full-file rewrites
+- minimize token usage
+- avoid duplicate info
+
+---------------------------------------------------------
+8. Final Output Format (STRICT JSON)
+---------------------------------------------------------
+
+{
+  "build_steps": [
+    {
+      "id": 1,
+      "title": "Create project folder structure",
+      "description": "Simple, child-friendly explanation",
+      "files_to_edit": ["..."],
+      "micro_step_instructions": [...],
+      "replit_prompt": "Short minimal-cost prompt",
+      "validation_check": [...],
+      "sub_agent_intent": "What this teaches"
+    },
+    {
+      "id": 2,
+      "title": "Create homepage layout",
+      ...
+    }
+  ],
+  "next_step": "id of next recommended task",
+  "progress_percentage": 0-100
+}
+
+---------------------------------------------------------
+Goal
+---------------------------------------------------------
+Create a Build Flow module that is:
+
+- the easiest for kids  
+- the most accurate for professionals  
+- the most structured for AI  
+- the most cost-efficient for Replit  
+- and the most future-proof to integrate sub-agents

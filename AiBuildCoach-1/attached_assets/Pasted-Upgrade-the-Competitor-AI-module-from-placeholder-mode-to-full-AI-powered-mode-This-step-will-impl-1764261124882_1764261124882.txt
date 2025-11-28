@@ -1,0 +1,176 @@
+Upgrade the Competitor AI module from placeholder mode to full AI-powered mode.
+
+This step will implement:
+
+- Automatic competitor discovery (AI-based)
+- Fetching competitor HTML (summaries only)
+- Full AI comparison between main website and competitors
+- Output including:
+    • summary
+    • strengths
+    • weaknesses
+    • competitor-by-competitor comparison
+    • actionable tasks
+    • exact code/UI/SEO fixes
+    • final outrank prompt
+
+Make the changes below:
+
+===================================
+1. Create modules/competitor_ai.py
+===================================
+from openai import OpenAI
+import os
+
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+def discover_competitors_ai(main_url, html):
+    """
+    Uses AI to discover 5–7 competitors based on:
+    - industry
+    - content
+    - keywords
+    - structure
+    - user intent
+    """
+
+    prompt = f"""
+You are an expert in competitive analysis.
+
+Given the HTML content of the following website:
+URL: {main_url}
+
+1. Identify the industry/niche.
+2. Identify the target audience.
+3. Identify 5–7 top realistic competitors.
+4. Output ONLY a Python list of URLs, in JSON format.
+
+HTML content (truncated for analysis):
+{html[:8000]}
+"""
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}]
+    )
+
+    return response.choices[0].message.content
+
+
+def run_competitor_ai(main_html, main_url, competitor_html_map):
+    """
+    Main AI comparison logic.
+    competitor_html_map: dict like {url: html}
+    """
+
+    prompt = f"""
+You are a senior competitive strategist, UX researcher, SEO expert, and conversion optimization specialist.
+
+Your job: Compare the MAIN website against ALL competitor websites.
+
+MAIN WEBSITE:
+URL: {main_url}
+
+HTML (truncated):
+{main_html[:8000]}
+
+COMPETITORS:
+Provide a structured comparison using the competitor HTML summaries:
+
+{ {k: v[:2000] for k,v in competitor_html_map.items()} }
+
+TASK:
+Produce a JSON dictionary with the following structure:
+
+{
+ "summary": "...",
+ "strengths": [...],
+ "weaknesses": [...],
+ "competitor_analysis": [
+    {
+      "url": "...",
+      "what_they_do_well": [...],
+      "what_they_do_poorly": [...],
+      "lessons_to_use": [...]
+    }
+ ],
+ "ai_tasks": [
+    {
+      "issue": "...",
+      "task": "...",
+      "priority": "high/medium/low"
+    }
+ ],
+ "exact_fixes": [
+    {
+      "selector": "<head/body/css/etc>",
+      "fix": "Specific HTML/CSS/JS/UX/SEO improvement"
+    }
+ ],
+ "fix_prompt": "A single copy-paste prompt for Replit that fixes all competitive disadvantages."
+}
+
+Return ONLY VALID JSON.
+"""
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}]
+    )
+
+    return response.choices[0].message.content
+
+===================================
+2. Update main.py /competitor-ai endpoint
+===================================
+- Remove placeholder logic.
+- Steps:
+    a) Fetch main HTML
+    b) Call discover_competitors_ai() to get competitor list
+    c) For each competitor:
+         • fetch HTML (truncate to 2–4k chars)
+    d) Pass all HTML into run_competitor_ai()
+    e) Return parsed JSON to frontend
+
+
+===================================
+3. Update static/js/app.js
+===================================
+- analyseCompetitors() must:
+    • Call /competitor-ai with only the main URL.
+    • Render:
+         - summary
+         - competitor list
+         - tasks
+         - exact fixes
+         - fix_prompt
+    • Use same card UI as UX/SEO tasks.
+
+
+===================================
+4. Update UI (index.html)
+===================================
+- Keep the same section but update wording to:
+
+<h2>Competitor AI Review (Auto-Detected)</h2>
+<button id="competitor-run">Run Competitor Analysis</button>
+
+
+===================================
+5. Styles (styles.css)
+===================================
+- Make competitor results match UX/SEO styling.
+- Add fix_prompt copy box.
+
+
+===================================
+6. Testing
+===================================
+- After implementing, test the following URLs:
+    • https://youlab.life/
+    • https://example.com
+    • Any Shopify or Wix website
+
+===================================
+
+Goal: A fully automated competitor AI engine that detects competitors, analyzes them, and provides a full outrank strategy with exact fixes.

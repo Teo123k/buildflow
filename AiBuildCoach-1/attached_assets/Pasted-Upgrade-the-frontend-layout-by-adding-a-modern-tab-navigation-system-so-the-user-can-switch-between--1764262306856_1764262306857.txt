@@ -1,0 +1,133 @@
+Upgrade the frontend layout by adding a modern tab navigation system so the user can switch between:
+
+1. Overview
+2. UX AI Review
+3. SEO AI Review
+4. Auto Test
+5. Competitor AI Review
+6. Tasks
+
+The goal is to organize the entire application cleanly and improve UX.
+
+Follow these steps:
+
+===========================================
+1. Update index.html — Add Tab Navigation
+===========================================
+
+At the top of the content area, add:
+
+<nav class="tab-menu">
+    <button class="tab-btn" data-tab="overview">Overview</button>
+    <button class="tab-btn" data-tab="ux-ai">UX AI</button>
+    <button class="tab-btn" data-tab="seo-ai">SEO AI</button>
+    <button class="tab-btn" data-tab="auto-test">Auto Test</button>
+    <button class="tab-btn" data-tab="competitor-ai">Competitors</button>
+    <button class="tab-btn" data-tab="tasks">Tasks</button>
+</nav>
+
+Wrap each analysis section inside:
+
+<div class="tab-section" id="tab-overview">...</div>
+<div class="tab-section" id="tab-ux-ai">...</div>
+<div class="tab-section" id="tab-seo-ai">...</div>
+<div class="tab-section" id="tab-auto-test">...</div>
+<div class="tab-section" id="tab-competitor-ai">...</div>
+<div class="tab-section" id="tab-tasks">...</div>
+
+Make sure all existing sections are moved inside the correct tab-section containers.
+
+Default: Only the Overview tab should be visible.
+
+===========================================
+2. Update static/css/styles.css — Tab Styling
+===========================================
+
+Add styles for the tabs:
+
+.tab-menu {
+    display: flex;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.tab-btn {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background: #f7f7f7;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.tab-btn.active {
+    background: #0066ff;
+    color: white;
+    border-color: #0066ff;
+}
+
+.tab-section {
+    display: none;
+}
+
+.tab-section.active {
+    display: block;
+}
+
+Ensure spacing and consistent design with existing cards.
+
+===========================================
+3. Update static/js/app.js — Tab Logic
+===========================================
+
+Add logic that:
+
+- Attaches click listeners to all .tab-btn
+- Hides all .tab-section
+- Shows only the selected tab-section
+- Adds .active class to the selected tab
+- Removes .active class from others
+
+Example:
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const target = btn.dataset.tab;
+        document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+        document.querySelector(`#tab-${target}`).classList.add('active');
+
+        document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+    });
+});
+
+Set default tab to Overview:
+
+document.querySelector('#tab-overview').classList.add('active');
+document.querySelector('.tab-btn[data-tab="overview"]').classList.add('active');
+
+===========================================
+4. Move existing content into the correct tabs
+===========================================
+
+- URL input + Analyse Website button → tab-overview
+- UX AI review output → tab-ux-ai
+- SEO AI review → tab-seo-ai
+- Auto Test output → tab-auto-test
+- Competitor AI → tab-competitor-ai
+- Any generated tasks → tab-tasks
+
+Do NOT alter backend functions.
+
+===========================================
+5. Ensure all analysis functions still run
+===========================================
+
+When the user clicks Analyse Website:
+- Overview tab shows a high-level summary
+- Other tabs fill in automatically but remain hidden
+- User can click tabs to switch views
+
+===========================================
+
+Goal: A clean SaaS-style interface with tabs that separate each module and dramatically improve UX.

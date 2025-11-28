@@ -1,0 +1,50 @@
+Fix all issues in my AI Build Coach project with the following requirements:
+
+1. **Fix UX AI Module**
+   - The “summary” field currently shows `[object Object]`. Change it so the backend returns:
+       { summary: string, tasks: [ { title, description, difficulty, element } ] }
+   - Frontend must display the summary as normal text.
+   - Show every UX improvement task with a SHORT description (max 1 sentence).
+   - Tasks MUST be simple enough for a 12-year-old to understand.
+   - Remove any empty UI blocks.
+   - Remove “element” boxes if element is empty.
+
+2. **Fix Auto-Test Module**
+   - The current auto-test returns “Unknown error.”
+   - Replace the auto-test with a very simple, lightweight test:
+        • Load the URL with fetch()
+        • Measure response time
+        • Check if HTML contains <title>, <meta>, <h1>, <a>
+        • Produce a short result: “Working”, “Slow”, or “Missing important tags”
+   - This avoids using a browser automation library and stops errors/timeouts.
+   - Make the auto-test fast (< 3 seconds).
+
+3. **Fix Competitor AI Module**
+   - Instead of long essays, reduce output by 90%.
+   - Final competitor report format should be:
+        - 3 strengths (short)
+        - 3 weaknesses (short)
+        - 3 things to improve immediately (short)
+   - Only analyse 2 competitors maximum to reduce cost.
+   - Make everything readable by a 12-year-old.
+
+4. **Improve AI Output Cost**
+   - Reduce token usage in ALL modules by:
+        • Using short prompts internally
+        • Returning only essential fields (summary, tasks, short lists)
+        • Eliminating long explanations
+
+5. **Improve Developer Usage**
+   - Every task should automatically generate a “Fix Prompt” button:
+        • When clicked, show a ready-to-copy prompt saying:
+          “Fix this issue: [ISSUE]. Here is the HTML/CSS/JS snippet to update: [CODE]. Write updated code.”
+   - The agent **should NOT fix the code itself**, only generate the prompt.
+
+6. **General Rules**
+   - Everything must be extremely simple and clear.
+   - No long paragraphs.
+   - No technical language that a beginner wouldn’t understand.
+   - All modules must return stable JSON, no objects printed as "[object Object]".
+   - After changes, run a self-test to ensure all endpoints return valid data.
+
+Make these updates across the backend and frontend now.
